@@ -5,6 +5,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -18,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -48,9 +51,9 @@ public class ColorWheel extends Application {
 
     public void start(Stage stage) {
 	VBox box = new VBox();
-	HBox scoreBox = new HBox();
-	Label scoreLabel = new Label("Score: ");
-	Label scoreDisplay = new Label("0");
+	box.setAlignment(Pos.CENTER);
+	Text scoreDisplay = new Text("0");
+	scoreDisplay.setFont(new Font(50));
 	Rotate rotate = new Rotate();
 	rotate.setAngle(1);
 	rotate.setPivotX(200);
@@ -144,8 +147,7 @@ public class ColorWheel extends Application {
         timeline.getChildren().setAll(pauseTransition);
 	timeline.play();
 
-	scoreBox.getChildren().addAll(scoreLabel, scoreDisplay);
-        box.getChildren().addAll(scoreBox, pane);
+        box.getChildren().addAll(scoreDisplay, pane);
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
