@@ -68,10 +68,12 @@ public class ColorWheel extends Application {
 			started = true;
 		    }
 		    else {
+			//if the player presses space while the pointer is on the right color
 			if (angle > arcNum * (360/numArcs) && angle < (arcNum + 1) * (360/numArcs)) {
 			    score++;
 			    scoreDisplay.setText(Integer.toString(score));
 			}
+			//if the player mismatched the color
 			else {
 			    timeline.stop();
 			    Alert gameOver = new Alert(AlertType.INFORMATION);
@@ -82,7 +84,7 @@ public class ColorWheel extends Application {
 			int lastNum = arcNum;
 			arcNum = random.nextInt(numArcs);
 			while (lastNum == arcNum) {
-			    arcNum = random.nextInt(numArcs);
+			    arcNum = random.nextInt(numArcs); //To prevent the same color from being selected twice
 			}
 			dir = dir * -1;
 			pointer.setFill(colors[arcNum]);
@@ -91,7 +93,9 @@ public class ColorWheel extends Application {
 
 		}
 	    });
-	setupLevel(3);
+	setupLevel(3); //The first level contains three colors
+	    
+	//Main game loop
 	EventHandler<ActionEvent> handler = event -> {
 	    if (started) {
 		angle = angle + dir;
@@ -106,6 +110,7 @@ public class ColorWheel extends Application {
 		if (angle > arcNum * (360/numArcs) && angle < (arcNum + 1) * (360/numArcs)) {
 		    passed = true;
 		}
+		//if the pointer passes the right color and the player didn't press space
 		if (angle > (arcNum + 1) * (360/numArcs) && passed) {
 		    timeline.stop();
 		    Alert gameOver = new Alert(AlertType.INFORMATION);
@@ -114,6 +119,7 @@ public class ColorWheel extends Application {
 		    gameOver.show();
 		}
 	    }
+	    //for the first level, a score of 4 is needed
 	    if (score > 3 && level == 1) {
 		level++;
 		numArcs++;
@@ -127,6 +133,7 @@ public class ColorWheel extends Application {
 		setupLevel(numArcs);
 		timeline.play();
 	    }
+	    //for every subsequent level
 	    if (score > prevScore + numArcs * 2 && level == prevLevel) {
 		level++;
                 numArcs++;
@@ -141,7 +148,7 @@ public class ColorWheel extends Application {
                 timeline.play();
 	    }
 	};
-	pauseTransition.setDuration(Duration.seconds(0.05));
+	pauseTransition.setDuration(Duration.seconds(0.05)); //Frame rate 50ms
 	pauseTransition.setOnFinished(handler);
 	timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getChildren().setAll(pauseTransition);
@@ -153,6 +160,10 @@ public class ColorWheel extends Application {
 	stage.show();
     }
 
+    /**
+     * Creates a new level by redrawing the color wheel and pointer
+     * and resetting variables.
+     */
     public void setupLevel(int num) {
 	pane.getChildren().clear();
 	arcs.clear();
